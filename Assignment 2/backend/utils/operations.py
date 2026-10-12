@@ -61,7 +61,7 @@ def load_vessels(directory, required_keys):
                 continue
         
         if "imo" in required_keys:
-            if not isinstance(vessel.get("imo"), int):
+            if not isinstance(vessel.get("imo"), str):
                 skip += 1
                 print(error.invalid_imo)
                 print(file)
@@ -209,6 +209,30 @@ def load_port_calls(path, required_keys):
             print(error_message)
             continue
 
+        if "call_id" in required_keys:
+            if not isinstance(call.get("call_id"), str):
+                skip += 1
+                print(error.invalid_call_id)
+                continue
+
+        if "vessel_id" in required_keys:
+            if not isinstance(call.get("vessel_id"), str):
+                skip += 1
+                print(error.invalid_vessel_id)
+                continue
+
+        if "port_code" in required_keys:
+            if not isinstance(call.get("port_code"), str):
+                skip += 1
+                print(error.invalid_port_code)
+                continue
+
+        if "arrival_date" in required_keys:
+            if not isinstance(call.get("arrival_date"), str):
+                skip += 1
+                print(error.invalid_arrival_date)
+                continue
+
         port_calls.append(call)
 
     return port_calls, skip
@@ -289,7 +313,7 @@ def load_shipments(directory, required_keys):
         if "weight_kg" in required_keys:
             if type(shipment.get("weight_kg")) not in (int, float):
                 skip += 1
-                print(error.weight_kg)
+                print(error.invalid_weight_kg)
                 print(file)
                 continue
 
