@@ -23,12 +23,13 @@ def main():
         service = menu.main()
 
         valid_service = False
-        service = helper.string_to_int(service)
+        service, error_message = helper.string_to_int(service)
 
         if service is not None:
             valid_service = True
         else:
-            print(error.invalid_service)
+            error_message = error.invalid_service
+            print(error_message)
 
         if valid_service is True:
             # List registered vessels
