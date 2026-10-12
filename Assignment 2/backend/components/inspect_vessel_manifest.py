@@ -58,12 +58,12 @@ def get_earliest_call(port_calls, vessel, reference_date):
             vessel_port_calls.append(port_call)
 
     # Important: Otherwise, select first qualifying port call, not necessarily the earliest.
-    vessel_port_calls.sort(key=operations.get_call_id)
-    vessel_port_calls.sort(key=operations.get_arrival_date)
+    vessel_port_calls.sort(key=operations.get_port_call_call_id)
+    vessel_port_calls.sort(key=operations.get_port_call_arrival_date)
     
     earliest_call = None
     for port_call in vessel_port_calls:
-        arrival_date, error_message = helper.validate_date(operations.get_arrival_date(port_call))
+        arrival_date, error_message = helper.validate_date(operations.get_port_call_arrival_date(port_call))
     
         if arrival_date is None:
             continue
@@ -77,7 +77,7 @@ def get_earliest_call(port_calls, vessel, reference_date):
 
 def identify_manifest(manifests, earliest_call):
     for manifest in manifests:
-        if operations.get_call_id(earliest_call) == operations.get_call_id(manifest):
+        if operations.get_port_call_call_id(earliest_call) == operations.get_manifest_call_id(manifest):
             return manifest
 
     return None
@@ -99,7 +99,7 @@ def main():
     required_keys = ["vessel_id", "name", "imo", "capacity_teu"]
     vessels, skipped_vessel_files = operations.inspect_vessels(required_keys)
 
-    print("Registered HarborFlow vessels.")
+    print("Registered HarborFlow vessels:")
     for vessel in vessels:
         print(f"- {vessel.get('name')} | {vessel.get('vessel_id')}")
     
@@ -128,7 +128,7 @@ def main():
         print(error.manifest_not_found)
         return
 
-    arrival_date, error_message = helper.validate_date(operations.get_arrival_date(earliest_call))
+    arrival_date, error_message = helper.validate_date(operations.get_port_call_arrival_date(earliest_call))
     arrival_date = arrival_date.strftime("%d %B %Y")
         
     print(f"Manifest for {vessel.get("name")} | Call {earliest_call.get("call_id")} | {arrival_date}")
@@ -150,7 +150,7 @@ def main():
         identified_shipment = None
 
         for shipment in shipment_records:
-            if operations.get_shipment_id(shipment) == shipment_id:
+            if operations.get_shipment_shipment_id(shipment) == shipment_id:
                 identified_shipment = shipment
                 resolved_weight += shipment.get("weight_kg")
                 break

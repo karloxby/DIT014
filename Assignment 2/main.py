@@ -7,7 +7,7 @@ from backend.utils import error
 from backend.components import (
         list_registered_vessels,
         inspect_vessel_manifest,
-        task_3,
+        identify_priority_cargo,
         task_4,
         task_5,
         task_6,
@@ -40,7 +40,7 @@ def main():
                 inspect_vessel_manifest.main()
             # Identify priority cargo
             elif service == 3:
-                task_3.main()
+                identify_priority_cargo.main()
             # Export a customer operations profile
             elif service == 4:
                 task_4.main()
